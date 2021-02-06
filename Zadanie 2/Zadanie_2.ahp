@@ -1,0 +1,122 @@
+Version: 2.0
+Alternatives: &alternatives
+# Lista wyborow razem z atrybutami
+  Smartfon 1:
+      Wyswietlacz: 6.4
+      Pamiec_wewnetrzna: 256
+      Pamiec_RAM: 8
+      Aparat_foto: 64
+      Cena: 829
+      Ocena: 4.8
+      Liczba_ocen: 25
+  Smartfon 2:
+      Wyswietlacz: 6.6
+      Pamiec_wewnetrzna: 128
+      Pamiec_RAM: 8
+      Aparat_foto: 64
+      Cena: 1099
+      Ocena: 3
+      Liczba_ocen: 1
+  Smartfon 3:
+      Wyswietlacz: 6.0
+      Pamiec_wewnetrzna: 64
+      Pamiec_RAM: 4
+      Aparat_foto: 64
+      Cena: 699
+      Ocena: 5
+      Liczba_ocen: 53
+  Smartfon 4:
+      Wyswietlacz: 6.4
+      Pamiec_wewnetrzna: 128
+      Pamiec_RAM: 4
+      Aparat_foto: 64
+      Cena: 749
+      Ocena: 4.4
+      Liczba_ocen: 68
+  Smartfon 5:
+      Wyswietlacz: 6.2
+      Pamiec_wewnetrzna: 128
+      Pamiec_RAM: 6
+      Aparat_foto: 64
+      Cena: 549
+      Ocena: 5
+      Liczba_ocen: 1
+  Smartfon 6:
+      Wyswietlacz: 6.5
+      Pamiec_wewnetrzna: 64
+      Pamiec_RAM: 6
+      Aparat_foto: 108
+      Cena: 259
+      Ocena: 4.7
+      Liczba_ocen: 150
+  Smartfon 7:
+      Wyswietlacz: 6.5
+      Pamiec_wewnetrzna: 256
+      Pamiec_RAM: 6
+      Aparat_foto: 64
+      Cena: 599
+      Ocena: 5
+      Liczba_ocen: 28
+  Smartfon 8:
+      Wyswietlacz: 6.6
+      Pamiec_wewnetrzna: 128
+      Pamiec_RAM: 8
+      Aparat_foto: 64
+      Cena: 449
+      Ocena: 4
+      Liczba_ocen: 3
+  Smartfon 9:
+      Wyswietlacz: 6.8
+      Pamiec_wewnetrzna: 64
+      Pamiec_RAM: 8
+      Aparat_foto: 64
+      Cena: 599
+      Ocena: 4.5
+      Liczba_ocen: 45
+  Smartfon 10:
+      Wyswietlacz: 6.0
+      Pamiec_wewnetrzna: 128
+      Pamiec_RAM: 8
+      Aparat_foto: 64
+      Cena: 1029
+      Ocena: 5
+      Liczba_ocen: 9
+# 
+# koniec sekcji z alternatywami
+#####################################
+# sekcja celu
+#
+Goal:
+  name: Choose the best smartphone
+  preferences:
+    pairwise:					# preferencje wzgledne
+      - [wydajnosc, jakosc, 1] 	# wydajnosc i jakosc maja taka sama wage
+      - [wydajnosc, styl, 9]	# wydajnosc zdecydowanie przewaza nad stylem
+      - [wydajnosc, cena, 7]	# wydajnosc wyraznie przewaza nad cena
+      - [jakosc, styl, 5]		# jakosc przewaza nad stylem
+      - [jakosc, cena, 5]		# jakosc przewaza nad cena
+      - [styl, cena, 5]    		# styl przewaza nad cena
+  children: 					# definicje preferencji
+    wydajnosc:
+      preferences:
+        pairwiseFunction:		# wydajnosc definiuje jako iloczyn pamieci wewn i RAM
+          function(a1, a2) max(a1$Pamiec_RAM * a1$Pamiec_wewnetrzna, a2$Pamiec_RAM * a2$Pamiec_wewnetrzna)
+      children: *alternatives
+    jakosc:
+      preferences:
+        pairwiseFunction:		# jakosc definiuje jako rozdzielczosc aparatu
+          function(a1, a2) max(a1$Aparat_foto, a2$Aparat_foto)
+      children: *alternatives
+    styl:
+      preferences:
+        pairwiseFunction:		# styl definiuje jako przekotna wyswietlacza
+          function(a1, a2) max(a1$Wyswietlacz, a2$Wyswietlacz)
+      children: *alternatives
+    cena:
+      preferences:
+        pairwiseFunction:
+          function(a1, a2) min(a1$Cena, a2$Cena)
+      children: *alternatives 
+#
+# koniec sekcji celu
+#####################################
